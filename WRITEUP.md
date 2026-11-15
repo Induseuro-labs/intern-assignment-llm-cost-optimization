@@ -97,9 +97,9 @@ more reliably than a second model call, at zero points.
 
 The system message is byte-identical for every ticket and all per-ticket
 content comes after it. `nodes.compose` passes it as `cached_prefix`
-automatically once it reaches the 1,024-token minimum. At ~80 tokens it does
+automatically once it reaches the 1,024-token minimum. At ~90 tokens it does
 not qualify today, and padding it to qualify would cost more than it saves
-(1,024 cached tokens = 307 points, versus ~240 points for the whole uncached
+(1,024 cached tokens = 307 points, versus ~270 points for the whole uncached
 system message now). The layout means caching switches on by itself if the
 static instructions ever grow.
 
