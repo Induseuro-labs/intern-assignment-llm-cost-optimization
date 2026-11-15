@@ -12,6 +12,17 @@
 | Q1 — single call | [question1/agent.py](question1/agent.py) | [questions/question-1.md](questions/question-1.md) |
 | Q2 — pipeline | [question2/agent.py](question2/agent.py) | [questions/question-2.md](questions/question-2.md) |
 
+## Solution
+
+Both tracks are solved; see **[WRITEUP.md](WRITEUP.md)** for the approach and per-call breakdowns.
+
+| Track | Baseline (points per ticket) | Now | Target |
+|-------|-----------------------------:|----:|-------:|
+| Q1 | ~8,800 | **~1,300** | ≤ 3,000 |
+| Q2 | ~73,500 | **~1,300** | ≤ 2,500 |
+
+Shared logic lives in [shopassist/](shopassist/); both agents are thin wrappers over it.
+
 ## Run
 
 ```bash
@@ -19,6 +30,7 @@ pip install -r requirements.txt
 pytest -q
 python question1/run.py
 python question2/run.py
+python scripts/cost_report.py   # per-call token / points breakdown
 ```
 
 `shared/llm.py` provides a local `LlmClient` with the same billing accounting you would use against a hosted chat API. Do not import `eval/reference.py` from your agent.
