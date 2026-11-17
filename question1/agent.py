@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import re
-import uuid
+
 from dataclasses import dataclass
 
 from shared.billing import CostSession
@@ -32,16 +32,6 @@ def parse_resolution(text: str) -> TicketResolution:
     )
 
 
-_FEW_SHOT = """
-Example ticket resolutions (format to copy):
-
-1. Unopened headphones, day 10 → {"action":"REFUND","kb_article":"returns-within-30-days"}
-2. Ebook, license shown → {"action":"SEND_ARTICLE","kb_article":"digital-license-no-refund"}
-3. Cracked custom mug → {"action":"ESCALATE_TIER2","kb_article":"custom-items-no-replace"}
-4. Cracked stock mug, day 2 → {"action":"REPLACE","kb_article":"damage-replacement-7-days"}
-"""
-
-
 class SupportCopilot:
     """
     ShopAssist Tier-1 copilot (baseline).
@@ -58,21 +48,18 @@ class SupportCopilot:
         ticket = get_ticket(ticket_id)
         order = get_order(ticket["order_id"])
         thread = format_thread(ticket)
-        snapshot = json.dumps(order, indent=2)
+        snapshot = json.dumps(order, separators=(",", ":"))
 
         system = "\n\n".join(
-            [
-                f"Run id {uuid.uuid4()}",
-                "You are ShopAssist, the Tier-1 customer support copilot.",
-                _FEW_SHOT,
-                "HELP CENTER:",
-                all_articles_blob(),
-                (
-                    "Instructions: Think step by step. Write full reasoning, quote any article "
-                    "you rely on, then output JSON with action, kb_article, customer_reply."
-                ),
-            ]
-        )
+    [
+        "You are ShopAssist, a customer support assistant.",
+        "Use the order details and help-center policies to choose the correct action.",
+        "Return only valid JSON with action, kb_article and customer_reply.",
+        "Keep the customer reply short. Do not include reasoning.",
+        "HELP CENTER:",
+        all_articles_blob(),
+    ]
+)
         user = "\n\n".join(
             [
                 f"TICKET_ID: {ticket_id}",
