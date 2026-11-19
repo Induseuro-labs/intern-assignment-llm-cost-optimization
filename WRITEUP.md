@@ -171,9 +171,8 @@ Neither agent imports `eval/reference.py`, and nothing is keyed on ticket ids.
   leaves the model no alternative when retrieval ranks the governing article
   second (it does for T-1003). `article_limit` is a constructor argument.
 - **Lexical retrieval** is enough for a help center of short, distinctly
-  worded policies. For a real catalogue with paraphrased questions I would
-  swap `PolicyIndex.rank` for embeddings or BM25 plus a reranker; the
-  interface stays the same.
+  worded policies. For a real catalogue I would swap `PolicyIndex.rank`
+  for embeddings or BM25 plus a reranker; the interface stays the same.
 - **Output length is not enforced by the client.** `LlmClient.chat` has no
   `max_tokens` parameter. Against a hosted API I would set `max_tokens` and
   use structured output so a customer message such as "explain step by step"
