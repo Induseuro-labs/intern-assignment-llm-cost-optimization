@@ -82,7 +82,7 @@ If any check fails, Audit returns ESCALATE_TIER2. It cites the article Retrieve 
 
 This is a compatibility check, not a re-implementation of the routing decision. It does not read order facts.
 
-**Caching was not used.** It needs an identical prefix of at least 1,024 tokens, and each prompt is 126–139 tokens. Adding a 1,024-token prefix to trigger it would cost at least 307 points per call, more than the entire current input. The billing records show 0 cached tokens in every version.
+**Caching was not used.** It needs an identical prefix of at least 1,024 tokens, and each prompt is 126–139 tokens. The order snapshot is different for every ticket, so it cannot be part of a shared cached prefix and stays at the full input price. Padding the prompts to a 1,024-token cached prefix would therefore cost at least 496–505 input points per call (at least 307 for the cached prefix plus 189–198 for the uncached snapshot), compared with 378–417 today. The billing records show 0 cached tokens in every version.
 
 ## Cost comparison (points per ticket)
 
@@ -94,7 +94,7 @@ This is a compatibility check, not a re-implementation of the routing decision. 
 | T-1004 | REPLACE | 73,425 | **1,872** | 97.5% |
 | **Total** | | **292,656** | **8,013** | **97.3%** |
 
-The original figures come from one recorded run. They vary by a few tokens between runs because of random trace IDs. The optimized pipeline has no random content, and adding the Audit policy check changed no token counts (the billing records are identical before and after it). About 63% of the remaining cost is the fixed reply size of the two LLM calls.
+The original figures come from one recorded run. They vary by a few tokens between runs because of random trace IDs. The optimized pipeline has no random content, and adding the Audit policy check changed no token counts (the billing records are identical before and after it). Between 58% and 63% of the remaining cost (63% for T-1001) is the fixed reply size of the two LLM calls.
 
 ## Per-stage breakdowns
 
